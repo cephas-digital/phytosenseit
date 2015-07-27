@@ -109,13 +109,7 @@ public class Tutorial3Activity extends Activity implements CvCameraViewListener2
 			
 			@Override
 			public void onClick(View v) {
-				Log.i(TAG,"onTouch event");
-		        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
-		        String currentDateandTime = sdf.format(new Date());
-		        fileName = Environment.getExternalStorageDirectory().getPath() +
-		                               "/sample_picture_" + currentDateandTime + ".jpg";
-		        mOpenCvCameraView.takePicture(fileName);
-		        Log.e("SAVED IMAGE",  fileName + "saved");
+	
 		        
 		        makeBinary();
 			}

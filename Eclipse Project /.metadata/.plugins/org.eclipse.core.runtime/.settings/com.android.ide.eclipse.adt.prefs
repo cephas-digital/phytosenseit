@@ -1,8 +1,6 @@
+com.android.ide.eclipse.adt.autoPickTarget=false
 com.android.ide.eclipse.adt.fixLegacyEditors=1
-<<<<<<< HEAD
 com.android.ide.eclipse.adt.sdk=/Users/anitagarcia/Library/Android/sdk
-=======
-com.android.ide.eclipse.adt.sdk=/Users/naelinaquino/Development/android-sdks
 com.android.ide.eclipse.adt.xmlEditor=true
->>>>>>> d71aeee2048f1c8ee9360ccaccf2222f4dd96a71
+design.palette.flyout.width=187
 eclipse.preferences.version=1
