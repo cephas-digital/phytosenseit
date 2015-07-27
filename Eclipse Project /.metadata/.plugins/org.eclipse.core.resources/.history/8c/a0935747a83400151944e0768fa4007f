@@ -225,8 +225,6 @@ public class Tutorial3Activity extends Activity implements CvCameraViewListener2
         return false;
     }
 
-    // You can use this function as an example 
-   
     public void  makeBinary(){
     	Mat img = Imgcodecs.imread(fileName);
     		Log.i("MAKE BINARY", fileName);

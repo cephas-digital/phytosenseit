@@ -225,8 +225,6 @@ public class Tutorial3Activity extends Activity implements CvCameraViewListener2
         return false;
     }
 
-    // You can use this function as an example 
-   
     public void  makeBinary(){
     	Mat img = Imgcodecs.imread(fileName);
     		Log.i("MAKE BINARY", fileName);
@@ -242,7 +240,10 @@ public class Tutorial3Activity extends Activity implements CvCameraViewListener2
     }
     public void matchTemplate(){
     	Mat img = Imgcodecs.imread(fileName);
-    	
-    	/* Your code to template match goes here */
+    	int result_index = 0;
+    	String[] diseasNames = new String[147];
+    	boolean[] states = new boolean[147];
+    	String[] diseasesDetected = new String[147];
+    	double[] resultMaxVals = new double[147];
     }
 }

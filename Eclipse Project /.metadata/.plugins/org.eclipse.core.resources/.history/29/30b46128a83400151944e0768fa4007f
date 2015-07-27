@@ -21,6 +21,11 @@ public class HomeActivity extends Activity {
                 startActivity(new Intent(HomeActivity.this, Tutorial3Activity.class));
             }    
         });
+
+        
+        
+        
+        
     }
     
 }

@@ -21,6 +21,10 @@ public class HomeActivity extends Activity {
                 startActivity(new Intent(HomeActivity.this, Tutorial3Activity.class));
             }    
         });
+
+        Intent myIntent = new Intent(NoResultFound.this, NoResultFound.class);
+        myIntent.putExtra("key", true);
+        CurrentActivity.this.startActivity(myIntent);
     }
     
 }
