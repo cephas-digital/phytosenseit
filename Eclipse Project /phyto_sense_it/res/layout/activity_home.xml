@@ -1,0 +1,125 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+     android:background="#FFFFFF"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="1">
+
+        <!-- PhytoSenseIt -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Phyto"
+                android:textStyle="bold"
+                android:textSize="45sp"
+                android:textColor="#212121"
+                /> <!-- add background color/pic -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SenseIt"
+                android:textSize="45sp"
+                android:textColor="#212121"
+             /> <!-- add background color/pic -->
+
+        </LinearLayout> <!-- End PhytoSenseIt -->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Potato disease detection"
+            android:textSize="20sp"
+            android:textColor="#424242"
+            android:paddingBottom="8dp"/>
+
+        <!-- Line under headline -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray" />
+
+        <!-- Tips Icon -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_marginTop="45dp"
+                android:layout_marginLeft="24dp"/>               
+                 <!-- Add your tip icon to drawable
+                android:src="@drawable/tipicon"-->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tips for Camera Use"
+                android:textSize="30sp"
+                android:layout_marginTop="45dp"
+                android:layout_marginLeft="8dp"
+                android:textColor="#212121"
+                />
+
+        </LinearLayout> <!-- End Tips Icon -->
+
+        <!-- Tips Text -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Well-lit environment"
+            android:layout_marginLeft="45dp"
+            android:textSize="20sp"
+            android:textColor="#424242"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Solid background"
+            android:layout_marginLeft="45dp"
+            android:textSize="20sp"
+            android:textColor="#424242"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Clean potato"
+            android:layout_marginLeft="45dp"
+            android:textSize="20sp"
+            android:textColor="#424242" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Center potato in camera"
+            android:layout_marginLeft="45dp"
+            android:textSize="20sp"
+            android:textColor="#424242"/>
+
+        <!-- End Tips Text -->
+
+   </LinearLayout>
+
+    <Button
+        android:id="@+id/launch_camera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="LAUNCH CAMERA"
+        android:layout_gravity="center_horizontal"
+        android:padding="20dp"/>
+
+</LinearLayout>

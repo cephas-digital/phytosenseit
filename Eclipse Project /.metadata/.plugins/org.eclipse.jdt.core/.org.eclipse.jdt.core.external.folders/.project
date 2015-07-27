@@ -12,7 +12,11 @@
 		<link>
 			<name>.link0</name>
 			<type>2</type>
+<<<<<<< HEAD
 			<location>/Users/anitagarcia/Library/Android/sdk/sources/android-21</location>
+=======
+			<location>/Users/naelinaquino/Development/android-sdks/sources/android-21</location>
+>>>>>>> d71aeee2048f1c8ee9360ccaccf2222f4dd96a71
 		</link>
 	</linkedResources>
 </projectDescription>
