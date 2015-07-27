@@ -1,0 +1,18 @@
+package org.opencv.samples.tutorial3;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.widget.Button;
+
+public class NoResultFound extends Activity {
+	
+	private Button mTryAgainButton = (Button) findViewById(R.button);
+	@Override
+	protected void onCreate(final Bundle savedInstanceSate)
+	{
+		super.onCreate(savedInstanceSate);
+		setContentView(R.layout.noresults);
+		
+	}
+	
+}

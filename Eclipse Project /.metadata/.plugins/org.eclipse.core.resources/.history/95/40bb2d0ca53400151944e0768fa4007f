@@ -1,0 +1,15 @@
+package org.opencv.samples.tutorial3;
+
+import android.app.Activity;
+import android.os.Bundle;
+
+public class NoResultFound extends Activity {
+	
+	@Override
+	protected void onCreate(final Bundle savedInstanceSate)
+	{
+		super.onCreate(savedInstanceSate);
+		setContentView(R.layout.noresults);
+	}
+	
+}

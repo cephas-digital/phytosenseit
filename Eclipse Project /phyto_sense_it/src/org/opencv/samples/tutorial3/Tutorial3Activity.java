@@ -102,17 +102,22 @@ public class Tutorial3Activity extends Activity implements CvCameraViewListener2
 
         mOpenCvCameraView.setVisibility(SurfaceView.VISIBLE);
 
-        mOpenCvCameraView.setCvCameraViewListener(this);
+      //  mOpenCvCameraView.setCvCameraViewListener(this);
         
         mFilterButton = (Button) findViewById(R.id.button1);
         mFilterButton.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				// Make Photo Taken into Binary
-				// makeBinary();
-				// Template match the Photo
-				templateMatch();				
+				Log.i(TAG,"onTouch event");
+		        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+		        String currentDateandTime = sdf.format(new Date());
+		        fileName = Environment.getExternalStorageDirectory().getPath() +
+		                               "/sample_picture_" + currentDateandTime + ".jpg";
+		        mOpenCvCameraView.takePicture(fileName);
+		        Log.e("SAVED IMAGE",  fileName + "saved");
+		        
+		        makeBinary();
 			}
 		});
     }
@@ -233,48 +238,12 @@ public class Tutorial3Activity extends Activity implements CvCameraViewListener2
 		ImageView imgV = (ImageView) findViewById(R.id.imageView);
 		imgV.setImageBitmap(bitmap);// set image view to 
     }
-    public void templateMatch(){
-    	String baseDir = Environment.getExternalStorageDirectory().getAbsolutePath();
-
-    	Log.i("TEMPLATE MATCH", "Directory Path: " + baseDir);
-    	/*
-        Mat img = Imgcodecs.imread("/Users/anitagarcia/Desktop/apple_blisterspot_10.jpg");
-        Mat templ = Imgcodecs.imread("/Users/anitagarcia/Desktop/template.jpg");
-
-
-        int result_cols = img.cols() - templ.cols() + 1;
-        int result_rows = img.rows() - templ.rows() + 1;
-        Mat result = new Mat(result_cols, result_rows, CvType.CV_32FC1);
-
-        // / Do the Matching and Normalize
-        Imgproc.matchTemplate(img, templ, result, Imgproc.TM_CCOEFF);
-        Core.normalize(result, result, 0, 1, Core.NORM_MINMAX, -1,
-                new Mat());
-
-        // / Localizing the best match with minMaxLoc
-        MinMaxLocResult mmr = Core.minMaxLoc(result);
-
-        Point matchLoc;
-        if (Imgproc.TM_CCOEFF == Imgproc.TM_SQDIFF
-                || Imgproc.TM_CCOEFF == Imgproc.TM_SQDIFF_NORMED) {
-            matchLoc = mmr.minLoc;
-        } 
-        else {
-            matchLoc = mmr.maxLoc;
-        }
-
-        // / Show me what you got
-       
-        Imgproc.rectangle(
-                img,
-                matchLoc,
-                new Point(matchLoc.x + templ.cols(), matchLoc.y
-                        + templ.rows()), new Scalar(0, 255, 0));
-
-        // Save the visualized detection.
-        System.out.println("Writing " + baseDir+ "/mediaAppPhotos/result.png");
-        Imgcodecs.imwrite(baseDir + "/mediaAppPhotos/result.png", img);
-    	
-    	*/
+    public void matchTemplate(){
+    	Mat img = Imgcodecs.imread(fileName);
+    	int result_index = 0;
+    	String[] diseasNames = new String[147];
+    	boolean[] states = new boolean[147];
+    	String[] diseasesDetected = new String[147];
+    	double[] resultMaxVals = new double[147];
     }
 }
