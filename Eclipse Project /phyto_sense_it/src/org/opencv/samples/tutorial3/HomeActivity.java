@@ -8,7 +8,8 @@ import android.view.View;
 import android.widget.Button;
 
 public class HomeActivity extends Activity {
-    private Button mLaunchCamera;
+   
+	private Button mLaunchCamera;
     
     @Override
     protected void onCreate(final Bundle savedInstanceState) {

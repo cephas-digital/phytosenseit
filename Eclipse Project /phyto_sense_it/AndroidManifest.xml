@@ -16,6 +16,15 @@
             android:screenOrientation="portrait" >
                     	
        </activity>
+       
+       <activity
+            android:name="ResultFound"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+                    	
+       </activity>
+           
 		
         <activity android:name="NoResultFound"
             	android:label="@string/app_name"
@@ -35,15 +44,15 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
        </activity>
+       
         <activity
             android:name="HomeActivity"
             android:configChanges="keyboardHidden|orientation"
             android:label="HomeActivity"
             android:screenOrientation="portrait" >
-       
 
-         	
         </activity>
+        
     </application>
 
     <supports-screens
