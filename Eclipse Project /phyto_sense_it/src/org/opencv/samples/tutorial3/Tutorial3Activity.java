@@ -6,12 +6,14 @@ import org.opencv.core.Core;
 import org.opencv.core.Core.MinMaxLocResult;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfPoint;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.imgcodecs.*;
 
 // *****************************************
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.ListIterator;
@@ -29,14 +31,15 @@ import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2;
 
 
 
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Rect;
 import android.hardware.Camera.Size;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -65,7 +68,7 @@ public class Tutorial3Activity extends Activity implements CvCameraViewListener2
     public String fileName;
    // private Mat img;// matrix that will hold image
 
-    private Button mFilterButton;
+    private Button mTakePhotoButton;
 
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
@@ -75,7 +78,8 @@ public class Tutorial3Activity extends Activity implements CvCameraViewListener2
                 {
                     Log.i(TAG, "OpenCV loaded successfully");
                     mOpenCvCameraView.enableView();
-                    mOpenCvCameraView.setOnTouchListener(Tutorial3Activity.this);
+                  
+                   // mOpenCvCameraView.setOnTouchListener(Tutorial3Activity.this);
                 } break;
                 default:
                 {
@@ -99,20 +103,32 @@ public class Tutorial3Activity extends Activity implements CvCameraViewListener2
         setContentView(R.layout.tutorial3_surface_view);
 
         mOpenCvCameraView = (Tutorial3View) findViewById(R.id.tutorial3_activity_java_surface_view);
-
+    
         mOpenCvCameraView.setVisibility(SurfaceView.VISIBLE);
+       
 
       //  mOpenCvCameraView.setCvCameraViewListener(this);
         
-        mFilterButton = (Button) findViewById(R.id.button1);
-        mFilterButton.setOnClickListener(new View.OnClickListener() {
-			
+        mTakePhotoButton = (Button) findViewById(R.id.button1);
+        mTakePhotoButton.setOnClickListener(new View.OnClickListener() {
+        	
+        	@SuppressLint("SimpleDateFormat")
 			@Override
 			public void onClick(View v) {
-	
-		        
-		        makeBinary();
-			}
+        		
+        		takePicture();
+        		final Handler handler = new Handler();
+        		handler.postDelayed(new Runnable() {
+        		    @Override
+        		    public void run() {
+        		        // Do something after 5s = 5000ms
+        		    	makeBinary();
+        		    	//Sets 'Take Photo' Button Invisibile 
+        				mTakePhotoButton.setVisibility(Button.GONE);
+        		    }
+        		}, 5000);
+		      
+        	}
 		});
     }
 
@@ -150,7 +166,14 @@ public class Tutorial3Activity extends Activity implements CvCameraViewListener2
     }
 
     public Mat onCameraFrame(CvCameraViewFrame inputFrame) {
-        return inputFrame.rgba();
+    	Log.e("onCameraFrame", "Inside");
+    	Mat mRgba = inputFrame.rgba();
+    	
+    	/* Under construction to display rectangle on camera view
+    	Imgproc.rectangle(mRgba, new Point(50, 50), new Point(100, 100), new Scalar(255,0,0,255), 3);
+    	Imgproc.putText(mRgba, "====TEST===", new Point(100, 500), 3, 1, new Scalar(255,0,0,255), 2);	
+    	 */
+    	return inputFrame.rgba();
     }
 
     @Override
@@ -206,23 +229,28 @@ public class Tutorial3Activity extends Activity implements CvCameraViewListener2
         }
         return true;
     }
+  
     @SuppressLint("SimpleDateFormat")
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         Log.i(TAG,"onTouch event");
+       /*
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
         String currentDateandTime = sdf.format(new Date());
         fileName = Environment.getExternalStorageDirectory().getPath() +
                                "/sample_picture_" + currentDateandTime + ".jpg";
         mOpenCvCameraView.takePicture(fileName);
         Toast.makeText(this, fileName + " saved", Toast.LENGTH_SHORT).show();
+       */
         return false;
+        
     }
 
     // You can use this function as an example 
    
     public void  makeBinary(){
     	Mat img = Imgcodecs.imread(fileName);
+    	
     		Log.i("MAKE BINARY", fileName);
 			Log.i("MAKE BINARY: ","Width:"+  img.width() + " Height: " + img.height());
 			
@@ -233,6 +261,18 @@ public class Tutorial3Activity extends Activity implements CvCameraViewListener2
 		mOpenCvCameraView.setVisibility(SurfaceView.GONE);
 		ImageView imgV = (ImageView) findViewById(R.id.imageView);
 		imgV.setImageBitmap(bitmap);// set image view to 
+    }
+    
+    public void takePicture(){
+    	//Takes picture 
+        Log.e(TAG,"onTouch event");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+        String currentDateandTime = sdf.format(new Date());
+        fileName = Environment.getExternalStorageDirectory().getPath() +
+                               "/sample_picture_" + currentDateandTime + ".jpg";
+        mOpenCvCameraView.takePicture(fileName);
+        Log.e("onClick", fileName);
+        
     }
     public void matchTemplate(){
     	Mat img = Imgcodecs.imread(fileName);
