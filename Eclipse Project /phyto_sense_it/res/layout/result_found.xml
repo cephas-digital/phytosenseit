@@ -25,12 +25,11 @@
         android:layout_below="@+id/title"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
-        android:text="DiseaseName"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#000000" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/again"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -39,19 +38,8 @@
         android:text="Try Again"
         android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/imageView"
-        android:layout_marginTop="28dp"
-        android:text="Disease appears as dark brown to black lesions of ........"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="#000000" />
-
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/disease_image_view"
         android:layout_width="200dp"
         android:layout_height="250dp"
         android:layout_below="@+id/disease_name"
@@ -59,5 +47,16 @@
         android:layout_marginTop="18dp"
         android:scaleType="fitXY"
         android:src="@drawable/tomato_bacterial_spot_13" />
+
+    <TextView
+        android:id="@+id/disease_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/disease_image_view"
+        android:layout_marginTop="32dp"
+        android:layout_toLeftOf="@+id/again"
+        android:text="adljfaljd asdjfla"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="#000000" />
     
 </RelativeLayout>
