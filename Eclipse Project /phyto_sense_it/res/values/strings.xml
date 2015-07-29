@@ -9,9 +9,9 @@
     <string name="disease_information1">Tomato anthracnose is a serious disease of processing 
             tomatoes caused by the fungus Colletotrichum coccodes. Early symptoms appear on ripe 
             fruit as small, slightly sunken, watersoaked circular spots </string>
-    <string name="disease_information2">Bacterial speck is caused by Pseudomonas syringae pv. tomato. 
-            The foliar symptoms of speck consist of small (1/8-1/4 in.) black lesions, often with a 
-            discrete yellow halo. </string>
+    <string name="disease_information2">Bacterial speck lesions may occur anywhere on the foliage, stems or 
+        	fruit. Symptoms appear as black specks, usually no more than 
+        	2 mm in diameter, which are usually surrounded by a yellow halo.  </string>
     <string name="disease_information3">Bacterial spot is caused by Xanthomonas campesiris pv, vesicatoria. 
             Infected leaves show small, irregular, dark lesions (fig. 6), which can coalesce and cause the 
             leaves to develop a general yellowing.</string>
