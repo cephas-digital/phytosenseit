@@ -1,0 +1,77 @@
+package com.example.phytosenseit;
+
+import org.opencv.core.Mat;
+import org.opencv.core.Point;
+import org.opencv.core.Rect;
+import org.opencv.core.Core.MinMaxLocResult;
+
+import android.support.v7.app.ActionBarActivity;
+import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+
+public class MainActivity extends ActionBarActivity {
+	
+
+	/*========TEMPLATE MATCHING MEMBERS======*/
+	// Region of Interst 
+	Rect roi;
+	public Mat subMat;
+	
+	// Matrix for the image, result, and template
+	public Mat img, result, templ;
+	
+	// Bitmap to allow for image processing on images
+	public Bitmap imgBMap;
+	public Bitmap templBMap;
+
+	// Tag name for logs
+	private static final String TAG = "TemplateMatchTest: ";
+	// Arrays that will store the max value and location of each template
+	// match that is found.
+	// Index 0 & 1: Healthy Apple
+	// Index 1 & 2: Apple Blister Spot
+	// Index 3 & 4: Apple Bitter Rot
+	// Index 5 & 6: Apple Scab
+	public double[] templateMaxValues = new double[8];
+
+	// Index that will be used with 'maxVaules' and 'locations' arrays
+	public int template_index = 0;
+
+	//Max value 
+	public MinMaxLocResult mmr;
+
+
+
+	// Used to locate the start drawing point on image
+	public Point matchLoc;
+	
+
+	/*========END======*/
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
+		int id = item.getItemId();
+		if (id == R.id.action_settings) {
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+}

@@ -25,6 +25,6 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:gravity="center_vertical|center_horizontal|bottom|top"
-        android:text="Take Photo" />
+        android:text="PHYTO SENSE IT" />
 
 </RelativeLayout>

@@ -10,6 +10,8 @@ import org.opencv.core.MatOfPoint;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.imgcodecs.*;
+import org.opencv.core.Rect;
+
 
 // *****************************************
 import java.text.SimpleDateFormat;
@@ -31,11 +33,14 @@ import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2;
 
 
 
+
+
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Rect;
 import android.hardware.Camera.Size;
 import android.os.Bundle;
 import android.os.Environment;
@@ -56,204 +61,207 @@ import android.widget.Toast;
 import org.opencv.imgcodecs.*;
 
 public class Tutorial3Activity extends Activity implements CvCameraViewListener2, OnTouchListener {
-    private static final String TAG = "OCVSample::Activity";
 
-    private Tutorial3View mOpenCvCameraView;
-    private List<Size> mResolutionList;
-    private MenuItem[] mEffectMenuItems;
-    private SubMenu mColorEffectsMenu;
-    private MenuItem[] mResolutionMenuItems;
-    private SubMenu mResolutionMenu;
-    
-    public String fileName;
-   // private Mat img;// matrix that will hold image
+	
+	private static final String TAG = "OpenCV::Test";
+	private Tutorial3View mOpenCvCameraView;
+	private List<Size> mResolutionList;
+	private MenuItem[] mEffectMenuItems;
+	private SubMenu mColorEffectsMenu;
+	private MenuItem[] mResolutionMenuItems;
+	private SubMenu mResolutionMenu;
 
-    private Button mTakePhotoButton;
+	public String fileName;
+	// private Mat img;// matrix that will hold image
 
-    private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
-        @Override
-        public void onManagerConnected(int status) {
-            switch (status) {
-                case LoaderCallbackInterface.SUCCESS:
-                {
-                    Log.i(TAG, "OpenCV loaded successfully");
-                    mOpenCvCameraView.enableView();
-                  
-                   // mOpenCvCameraView.setOnTouchListener(Tutorial3Activity.this);
-                } break;
-                default:
-                {
-                    super.onManagerConnected(status);
-                } break;
-            }
-        }
-    };
+	private Button mTakePhotoButton;
 
-    public Tutorial3Activity() {
-        Log.i(TAG, "Instantiated new " + this.getClass());
-    }
 
-    /** Called when the activity is first created. */
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        Log.i(TAG, "called onCreate");
-        super.onCreate(savedInstanceState);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+	private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
+		@Override
+		public void onManagerConnected(int status) {
+			switch (status) {
+			case LoaderCallbackInterface.SUCCESS:
+			{
+				Log.i(TAG, "OpenCV loaded successfully");
+				mOpenCvCameraView.enableView();
 
-        setContentView(R.layout.tutorial3_surface_view);
+				// mOpenCvCameraView.setOnTouchListener(Tutorial3Activity.this);
+			} break;
+			default:
+			{
+				super.onManagerConnected(status);
+			} break;
+			}
+		}
+	};
 
-        mOpenCvCameraView = (Tutorial3View) findViewById(R.id.tutorial3_activity_java_surface_view);
-    
-        mOpenCvCameraView.setVisibility(SurfaceView.VISIBLE);
-       
+	public Tutorial3Activity() {
+		Log.i(TAG, "Instantiated new " + this.getClass());
+	}
 
-      //  mOpenCvCameraView.setCvCameraViewListener(this);
-        
-        mTakePhotoButton = (Button) findViewById(R.id.button1);
-        mTakePhotoButton.setOnClickListener(new View.OnClickListener() {
-        	
-        	@SuppressLint("SimpleDateFormat")
+	/** Called when the activity is first created. */
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		Log.i(TAG, "called onCreate");
+		super.onCreate(savedInstanceState);
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+		setContentView(R.layout.tutorial3_surface_view);
+
+		mOpenCvCameraView = (Tutorial3View) findViewById(R.id.tutorial3_activity_java_surface_view);
+
+		mOpenCvCameraView.setVisibility(SurfaceView.VISIBLE);
+
+
+		//  mOpenCvCameraView.setCvCameraViewListener(this);
+
+		mTakePhotoButton = (Button) findViewById(R.id.button1);
+		mTakePhotoButton.setOnClickListener(new View.OnClickListener() {
+
+			@SuppressLint("SimpleDateFormat")
 			@Override
 			public void onClick(View v) {
-        		
-        		takePicture();
-        		final Handler handler = new Handler();
-        		handler.postDelayed(new Runnable() {
-        		    @Override
-        		    public void run() {
-        		        // Do something after 5s = 5000ms
-        		    	makeBinary();
-        		    	//Sets 'Take Photo' Button Invisibile 
-        				mTakePhotoButton.setVisibility(Button.GONE);
-        		    }
-        		}, 5000);
-		      
-        	}
+
+				//Takes and saves the photo
+				takePicture();
+
+				// Sets up a delay  (5s = 5000ms)
+				final Handler handler = new Handler();
+				handler.postDelayed(new Runnable() {
+					@Override
+					public void run() {
+						// Calls your algorithm after
+						// yourAlgorithmCall(); 
+						//matchesTemplatesToImg(); 
+						// Sets 'Take Photo' Button Invisibile 
+						mTakePhotoButton.setVisibility(Button.GONE);
+					}
+				}, 4000);
+			}
 		});
-    }
+	}
 
-    @Override
-    public void onPause()
-    {
-        super.onPause();
-        if (mOpenCvCameraView != null)
-            mOpenCvCameraView.disableView();
-    }
+	@Override
+	public void onPause()
+	{
+		super.onPause();
+		if (mOpenCvCameraView != null)
+			mOpenCvCameraView.disableView();
+	}
 
-    @Override
-    public void onResume()
-    {
-        super.onResume();
-        if (!OpenCVLoader.initDebug()) {
-            Log.d(TAG, "Internal OpenCV library not found. Using OpenCV Manager for initialization");
-            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback);
-        } else {
-            Log.d(TAG, "OpenCV library found inside package. Using it!");
-            mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
-        }
-    }
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+		if (!OpenCVLoader.initDebug()) {
+			Log.d(TAG, "Internal OpenCV library not found. Using OpenCV Manager for initialization");
+			OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback);
+		} else {
+			Log.d(TAG, "OpenCV library found inside package. Using it!");
+			mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
+		}
+	}
 
-    public void onDestroy() {
-        super.onDestroy();
-        if (mOpenCvCameraView != null)
-            mOpenCvCameraView.disableView();
-    }
+	public void onDestroy() {
+		super.onDestroy();
+		if (mOpenCvCameraView != null)
+			mOpenCvCameraView.disableView();
+	}
 
-    public void onCameraViewStarted(int width, int height) {
-    }
+	public void onCameraViewStarted(int width, int height) {
 
-    public void onCameraViewStopped() {
-    }
 
-    public Mat onCameraFrame(CvCameraViewFrame inputFrame) {
-    	Log.e("onCameraFrame", "Inside");
-    	Mat mRgba = inputFrame.rgba();
-    	
-    	/* Under construction to display rectangle on camera view
-    	Imgproc.rectangle(mRgba, new Point(50, 50), new Point(100, 100), new Scalar(255,0,0,255), 3);
-    	Imgproc.putText(mRgba, "====TEST===", new Point(100, 500), 3, 1, new Scalar(255,0,0,255), 2);	
-    	 */
-    	return inputFrame.rgba();
-    }
+	}
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        List<String> effects = mOpenCvCameraView.getEffectList();
+	public void onCameraViewStopped() {
+	}
 
-        if (effects == null) {
-            Log.e(TAG, "Color effects are not supported by device!");
-            return true;
-        }
+	public Mat onCameraFrame(CvCameraViewFrame inputFrame) {
+		Mat mRgba = inputFrame.rgba();
+		return mRgba;
+	}
 
-        mColorEffectsMenu = menu.addSubMenu("Color Effect");
-        mEffectMenuItems = new MenuItem[effects.size()];
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		List<String> effects = mOpenCvCameraView.getEffectList();
 
-        int idx = 0;
-        ListIterator<String> effectItr = effects.listIterator();
-        while(effectItr.hasNext()) {
-           String element = effectItr.next();
-           mEffectMenuItems[idx] = mColorEffectsMenu.add(1, idx, Menu.NONE, element);
-           idx++;
-        }
+		if (effects == null) {
+			Log.e(TAG, "Color effects are not supported by device!");
+			return true;
+		}
 
-        mResolutionMenu = menu.addSubMenu("Resolution");
-        mResolutionList = mOpenCvCameraView.getResolutionList();
-        mResolutionMenuItems = new MenuItem[mResolutionList.size()];
+		mColorEffectsMenu = menu.addSubMenu("Color Effect");
+		mEffectMenuItems = new MenuItem[effects.size()];
 
-        ListIterator<Size> resolutionItr = mResolutionList.listIterator();
-        idx = 0;
-        while(resolutionItr.hasNext()) {
-            Size element = resolutionItr.next();
-            mResolutionMenuItems[idx] = mResolutionMenu.add(2, idx, Menu.NONE,
-                    Integer.valueOf(element.width).toString() + "x" + Integer.valueOf(element.height).toString());
-            idx++;
-         }
-        return true;
-    }
+		int idx = 0;
+		ListIterator<String> effectItr = effects.listIterator();
+		while(effectItr.hasNext()) {
+			String element = effectItr.next();
+			mEffectMenuItems[idx] = mColorEffectsMenu.add(1, idx, Menu.NONE, element);
+			idx++;
+		}
 
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Log.i(TAG, "called onOptionsItemSelected; selected item: " + item);
-        if (item.getGroupId() == 1)
-        {
-            mOpenCvCameraView.setEffect((String) item.getTitle());
-            Toast.makeText(this, mOpenCvCameraView.getEffect(), Toast.LENGTH_SHORT).show();
-        }
-        else if (item.getGroupId() == 2)
-        {
-            int id = item.getItemId();
-            Size resolution = mResolutionList.get(id);
-            mOpenCvCameraView.setResolution(resolution);
-            resolution = mOpenCvCameraView.getResolution();
-            String caption = Integer.valueOf(resolution.width).toString() + "x" + Integer.valueOf(resolution.height).toString();
-            Toast.makeText(this, caption, Toast.LENGTH_SHORT).show();
-        }
-        return true;
-    }
-  
-    @SuppressLint("SimpleDateFormat")
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        Log.i(TAG,"onTouch event");
-       /*
+		mResolutionMenu = menu.addSubMenu("Resolution");
+		mResolutionList = mOpenCvCameraView.getResolutionList();
+		mResolutionMenuItems = new MenuItem[mResolutionList.size()];
+
+		ListIterator<Size> resolutionItr = mResolutionList.listIterator();
+		idx = 0;
+		while(resolutionItr.hasNext()) {
+			Size element = resolutionItr.next();
+			mResolutionMenuItems[idx] = mResolutionMenu.add(2, idx, Menu.NONE,
+					Integer.valueOf(element.width).toString() + "x" + Integer.valueOf(element.height).toString());
+			idx++;
+		}
+		return true;
+	}
+
+	public boolean onOptionsItemSelected(MenuItem item) {
+		Log.i(TAG, "called onOptionsItemSelected; selected item: " + item);
+		if (item.getGroupId() == 1)
+		{
+			mOpenCvCameraView.setEffect((String) item.getTitle());
+			Toast.makeText(this, mOpenCvCameraView.getEffect(), Toast.LENGTH_SHORT).show();
+		}
+		else if (item.getGroupId() == 2)
+		{
+			int id = item.getItemId();
+			Size resolution = mResolutionList.get(id);
+			mOpenCvCameraView.setResolution(resolution);
+			resolution = mOpenCvCameraView.getResolution();
+			String caption = Integer.valueOf(resolution.width).toString() + "x" + Integer.valueOf(resolution.height).toString();
+			Toast.makeText(this, caption, Toast.LENGTH_SHORT).show();
+		}
+		return true;
+	}
+
+	@SuppressLint("SimpleDateFormat")
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		Log.i(TAG,"onTouch event");
+		/*
+		 * THIS CODE WAS ORIGINALLY IN THE SAMPLE DOC
+		 * COPIED INTO 'TAKE PHOTO' FUNCTION
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
         String currentDateandTime = sdf.format(new Date());
         fileName = Environment.getExternalStorageDirectory().getPath() +
                                "/sample_picture_" + currentDateandTime + ".jpg";
         mOpenCvCameraView.takePicture(fileName);
         Toast.makeText(this, fileName + " saved", Toast.LENGTH_SHORT).show();
-       */
-        return false;
-        
-    }
+		 */
+		return false;
 
-    // You can use this function as an example 
-   
-    public void  makeBinary(){
-    	Mat img = Imgcodecs.imread(fileName);
-    	
-    		Log.i("MAKE BINARY", fileName);
-			Log.i("MAKE BINARY: ","Width:"+  img.width() + " Height: " + img.height());
-			
+	}
+
+	// You can use this function as a generic image processing example 
+
+	public void  makeBinary(){
+		Mat img = Imgcodecs.imread(fileName);
+
+		Log.i("MAKE BINARY", fileName);
+		Log.i("MAKE BINARY: ","Width:"+  img.width() + " Height: " + img.height());
+
 		Imgproc.cvtColor(img, img, Imgproc.COLOR_RGB2GRAY); 
 		Imgproc.adaptiveThreshold(img, img,255, Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C, Imgproc.THRESH_BINARY, 21, 4);
 		Bitmap bitmap = Bitmap.createBitmap(img.cols(), img.rows(), Bitmap.Config.ARGB_8888);
@@ -261,22 +269,19 @@ public class Tutorial3Activity extends Activity implements CvCameraViewListener2
 		mOpenCvCameraView.setVisibility(SurfaceView.GONE);
 		ImageView imgV = (ImageView) findViewById(R.id.imageView);
 		imgV.setImageBitmap(bitmap);// set image view to 
-    }
-    
-    public void takePicture(){
-    	//Takes picture 
-        Log.e(TAG,"onTouch event");
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
-        String currentDateandTime = sdf.format(new Date());
-        fileName = Environment.getExternalStorageDirectory().getPath() +
-                               "/sample_picture_" + currentDateandTime + ".jpg";
-        mOpenCvCameraView.takePicture(fileName);
-        Log.e("onClick", fileName);
-        
-    }
-    public void matchTemplate(){
-    	Mat img = Imgcodecs.imread(fileName);
-    	
-    	/* Your code to template match goes here */
-    }
+	}
+
+	public void takePicture(){
+		//Takes picture 
+		Log.e(TAG,"onTouch event");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+		String currentDateandTime = sdf.format(new Date());
+		fileName = Environment.getExternalStorageDirectory().getPath() +
+				"/sample_picture_" + currentDateandTime + ".jpg";
+		mOpenCvCameraView.takePicture(fileName);
+		Log.e("onClick", fileName);
+
+	}
+
+
 }
