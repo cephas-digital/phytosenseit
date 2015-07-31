@@ -21,8 +21,7 @@ public class NoResultFound extends Activity {
 			@Override
 			public void onClick(View v) {
 				   // Context context = getApplicationContext();
-			    Intent i = new Intent(getBaseContext(), HomeActivity.class);
-			    startActivity(i);
+				startActivity(new Intent(NoResultFound.this, ResultFound.class));
 			
 			}
 		});

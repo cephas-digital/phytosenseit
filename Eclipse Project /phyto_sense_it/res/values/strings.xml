@@ -1,4 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">OCV T3 Camera Control</string>
+    
+    <string name="disease1">Anthracnose</string>
+    <string name="disease2">Bacterial speack</string>
+    <string name="disease3">Bacterial spot</string>
+    
+    <string name="disease_information1">Tomato anthracnose is a serious disease of processing 
+            tomatoes caused by the fungus Colletotrichum coccodes. Early symptoms appear on ripe 
+            fruit as small, slightly sunken, watersoaked circular spots </string>
+    <string name="disease_information2">Bacterial speck lesions may occur anywhere on the foliage, stems or 
+        	fruit. Symptoms appear as black specks, usually no more than 
+        	2 mm in diameter, which are usually surrounded by a yellow halo.  </string>
+    <string name="disease_information3">Bacterial spot is caused by Xanthomonas campesiris pv, vesicatoria. 
+            Infected leaves show small, irregular, dark lesions (fig. 6), which can coalesce and cause the 
+            leaves to develop a general yellowing.</string>
+    
+    
 </resources>

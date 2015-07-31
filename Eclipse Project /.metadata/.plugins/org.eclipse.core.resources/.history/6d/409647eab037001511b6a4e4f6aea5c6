@@ -98,7 +98,10 @@ public class ResultFound extends Activity {
                 startActivity(new Intent(ResultFound.this, HomeActivity.class));
             }    
         });
-
+	    
+	    
+	    
+>>>>>>> bdd701117733ef10373f988f01a240c1ec81becc
 	}
 
 }
