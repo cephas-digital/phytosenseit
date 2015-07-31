@@ -19,8 +19,7 @@ public class NoResultFound extends Activity {
 		diseadeImageView = (ImageView) findViewById(R.id.imageView1);
 		 mTryAgainButton = (Button) findViewById(R.id.button);
 		 //set stock image
-		 // change 'icon' to generic image
-		 diseadeImageView.setImageResource(R.drawable.icon);
+		 diseadeImageView.setImageResource(R.drawable.drawable);
 		 mTryAgainButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {

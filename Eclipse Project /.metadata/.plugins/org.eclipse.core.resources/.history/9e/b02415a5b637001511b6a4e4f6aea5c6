@@ -24,7 +24,7 @@
         android:layout_alignBaseline="@+id/textView2"
         android:layout_alignBottom="@+id/textView2"
         android:layout_toLeftOf="@+id/textView2"
-        android:text="Phyto"
+        android:text="PHYTO"
         android:textColor="#000000"
         android:textSize="36sp"
         android:textStyle="bold" />
@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/textView2"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/phytosenseit_icon" />
+        android:src="@drawable/splash" />
 
 </RelativeLayout>
 
